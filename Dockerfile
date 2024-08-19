@@ -9,7 +9,7 @@ RUN git clone https://github.com/artic-network/rampart-mpxv
 # install rampart
 # This is a fork of rampart with "nodejs" pinned to 20.7.0
 # Using the original rampart environment.yml leads to an npm version issue.
-RUN git clone https://github.com/Desperate-Dan/rampart.git
+RUN git clone https://github.com/artic-network/rampart.git
 
 # create rampart environment
 RUN conda env create -f /data/rampart/environment.yml
