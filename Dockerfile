@@ -1,10 +1,17 @@
 # A modified verion of Corey's Dockerfile from: https://github.com/CorwinAnsley/artifice/blob/main/artifice/docker_rampart/Dockerfile
 # This will create a docker container that can run rampart and comes preloaded with the mpvx rampart protocol
+# start with an image with conda installed
+FROM continuumio/miniconda3 AS compile-image
 
+# set working directory
+WORKDIR /data
+
+# install gcc/make for porechop
+RUN apt-get update -y && apt-get upgrade -y
 RUN apt install build-essential -y --no-install-recommends
 
 # copy in protocol files
-RUN git clone https://github.com/artic-network/rampart-mpxv
+RUN git clone https://github.com/Desperate-Dan/rampart-tutorial.git
 
 # install rampart
 # This is a fork of rampart with "nodejs" pinned to 20.7.0
@@ -55,10 +62,10 @@ ENV PYTHONUNBUFFERED=1
 
 # create directories to mount the basecalled directory and protocol
 RUN mkdir -p /data/run_data/basecalled && \
-mkdir -p /data/run_data/protocol && \
-cp -a /data/rampart/default_protocol/.  /data/run_data/protocol
+mkdir -p /data/run_data/protocols && \
+cp -a /data/rampart-tutorial/protocols/.  /data/run_data/protocols
 
 SHELL ["/bin/bash", "-c"]
 
 # run rampart
-ENTRYPOINT source /venv/bin/activate
+ENTRYPOINT source /venv/bin/activate && /bin/bash
